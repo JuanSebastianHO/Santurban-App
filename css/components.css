@@ -1,70 +1,82 @@
 /**
  * @file css/components.css
- * @description Componentes táctiles de alto contraste para guardabosques y
- * paneles analíticos para administradores.
+ * @description Componentes con bordes redondeados tipo píldora, jerarquía visual
+ * amigable para móvil y bajo consumo en pantallas OLED.
  */
 
-/* Botones Táctiles de Campo */
+/* =========================================================================
+   BOTONES REDONDEADOS (Píldoras Táctiles Amigables)
+   ========================================================================= */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
     min-height: var(--touch-target-min);
-    padding: 0.65rem 1.15rem;
+    padding: 0.75rem 1.4rem;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.96rem;
     font-weight: 600;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
     border: 1px solid transparent;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+    transition: transform 0.14s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     user-select: none;
 }
 
 .btn:active:not(:disabled) {
-    transform: scale(0.99);
+    transform: scale(0.97);
 }
 
 .btn:disabled {
-    opacity: 0.55;
+    opacity: 0.45;
     cursor: not-allowed;
 }
 
+/* Botón Principal: Salvia suave con texto oscuro de alto contraste */
 .btn-primary {
     background-color: var(--accent-moss);
-    color: #081c15;
+    color: #07130d;
     font-weight: 700;
+    box-shadow: 0 4px 16px rgba(118, 181, 150, 0.18);
 }
 
 .btn-primary:hover:not(:disabled) {
     background-color: var(--accent-moss-hover);
 }
 
+/* Botón Secundario: Superficie piedra redondeada */
 .btn-secondary {
     background-color: var(--bg-surface);
     color: var(--text-primary);
-    border-color: var(--border-color);
+    border-color: var(--border-strong);
 }
 
 .btn-secondary:hover:not(:disabled) {
-    border-color: var(--accent-moss);
+    background-color: #212b26;
+    border-color: rgba(118, 181, 150, 0.45);
 }
 
+/* Botón Ruta Simulada: Tono tierra cálido y amigable */
 .btn-earth {
-    background-color: #3d2c1e;
-    color: #f8e2c8;
-    border-color: var(--accent-earth);
+    background-color: rgba(217, 167, 115, 0.14);
+    color: #f3cfa4;
+    border-color: rgba(217, 167, 115, 0.38);
 }
 
 .btn-earth:hover:not(:disabled) {
-    background-color: #4f3927;
+    background-color: rgba(217, 167, 115, 0.24);
 }
 
+/* Botón Peligro / Cerrar Sesión */
 .btn-danger {
-    background-color: rgba(230, 57, 70, 0.18);
-    color: #ff8fa3;
-    border-color: var(--status-danger);
+    background-color: rgba(229, 107, 111, 0.12);
+    color: #f4a2a5;
+    border-color: rgba(229, 107, 111, 0.32);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: rgba(229, 107, 111, 0.22);
 }
 
 .btn-block {
@@ -72,48 +84,51 @@
 }
 
 .btn-large {
-    min-height: 54px;
+    min-height: 58px;
     font-size: 1.05rem;
+    margin-top: 0.5rem;
 }
 
 .btn-sm {
-    min-height: 38px;
-    padding: 0.4rem 0.85rem;
+    min-height: 40px;
+    padding: 0.45rem 1rem;
     font-size: 0.85rem;
 }
 
-/* Badges de Estado (Conexión, Rol, Fuente GPS) */
+/* =========================================================================
+   PÍLDORAS DE ESTADO E INSIGNIAS
+   ========================================================================= */
 .status-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
-    font-weight: 700;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
     border: 1px solid transparent;
 }
 
 .status-pill-dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
 }
 
 .status-online {
-    background-color: rgba(64, 145, 108, 0.22);
-    color: #95d5b2;
-    border-color: var(--status-online);
+    background-color: rgba(104, 176, 136, 0.14);
+    color: #a3dec0;
+    border-color: rgba(104, 176, 136, 0.3);
 }
 
 .status-online .status-pill-dot {
-    background-color: #52b788;
+    background-color: #76b596;
 }
 
 .status-offline {
-    background-color: rgba(224, 122, 95, 0.22);
-    color: #f4a261;
-    border-color: var(--status-offline);
+    background-color: rgba(226, 135, 107, 0.15);
+    color: #f5b895;
+    border-color: rgba(226, 135, 107, 0.35);
 }
 
 .status-offline .status-pill-dot {
@@ -121,62 +136,26 @@
 }
 
 .role-badge {
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.76rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--accent-earth);
+    letter-spacing: 0.03em;
+    background-color: rgba(217, 167, 115, 0.12);
+    border: 1px solid rgba(217, 167, 115, 0.3);
     color: var(--accent-earth);
 }
 
-/* Formularios de Alto Contraste */
-.form-group {
-    margin-bottom: 1.15rem;
-}
-
-.form-label {
-    display: block;
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.45rem;
-}
-
-.form-hint {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-top: 0.3rem;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-    width: 100%;
-    min-height: var(--touch-target-min);
-    padding: 0.7rem 0.9rem;
-    background-color: var(--bg-input);
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-.form-textarea {
-    min-height: 96px;
-    resize: vertical;
-}
-
-/* Tarjetas y Paneles */
+/* =========================================================================
+   TARJETAS Y SECCIONES REDONDEADAS (Fáciles de escanear con la vista)
+   ========================================================================= */
 .panel-card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 1.25rem;
+    padding: 1.5rem;
     box-shadow: var(--shadow-card);
     margin-bottom: 1.25rem;
 }
@@ -187,186 +166,274 @@
     justify-content: space-between;
     gap: 0.75rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.85rem;
     border-bottom: 1px solid var(--border-color);
 }
 
 .panel-title {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+/* Sub-bloques de pasos (Paso 1, Paso 2...) muy limpios y redondeados */
+.telemetry-box {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 22px;
+    padding: 1.25rem;
+    margin-bottom: 1.35rem;
+}
+
+.telemetry-box .panel-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.85rem;
+}
+
+.telemetry-box .panel-header strong {
+    font-size: 1.02rem;
     color: var(--text-primary);
 }
 
-/* Pantalla de Autenticación */
+/* =========================================================================
+   FORMULARIOS CÓMODOS EN PANTALLAS MÓVILES
+   ========================================================================= */
+.form-group {
+    margin-bottom: 1.35rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.55rem;
+}
+
+.form-hint {
+    display: block;
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    margin-top: 0.45rem;
+    line-height: 1.45;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    min-height: var(--touch-target-min);
+    padding: 0.8rem 1.1rem;
+    background-color: var(--bg-input);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    background-color: #18211c;
+    border-color: var(--accent-moss);
+}
+
+.form-textarea {
+    min-height: 108px;
+    resize: vertical;
+    border-radius: 20px;
+}
+
+/* =========================================================================
+   PANTALLA DE INICIO DE SESIÓN AMIGABLE
+   ========================================================================= */
 .auth-screen-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 130px);
-    padding: 1rem 0;
+    min-height: calc(100vh - 140px);
+    padding: 1rem 0.5rem;
 }
 
 .auth-card {
     width: 100%;
-    max-width: 460px;
+    max-width: 440px;
     background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 2rem 1.75rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 30px;
+    padding: 2.25rem 1.85rem;
     box-shadow: var(--shadow-card);
 }
 
 .auth-header {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
 }
 
 .ecosystem-badge {
     display: inline-block;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     color: var(--accent-earth);
-    background-color: rgba(212, 163, 115, 0.12);
-    border: 1px solid rgba(212, 163, 115, 0.35);
-    padding: 0.25rem 0.65rem;
-    border-radius: 999px;
-    margin-bottom: 0.75rem;
+    background-color: rgba(217, 167, 115, 0.12);
+    border: 1px solid rgba(217, 167, 115, 0.25);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 0.9rem;
 }
 
 .auth-title {
-    font-size: 1.65rem;
+    font-size: 1.7rem;
     font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 0.35rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
 }
 
 .auth-subtitle {
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     color: var(--text-secondary);
 }
 
 .auth-footer-note {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
+    margin-top: 1.65rem;
+    padding-top: 1.15rem;
     border-top: 1px solid var(--border-color);
     font-size: 0.8rem;
     color: var(--text-muted);
     text-align: center;
 }
 
-/* Banners de Alerta y Mensajes */
+/* =========================================================================
+   AVISOS Y MENSAJES DE ESTADO REDONDEADOS
+   ========================================================================= */
 .alert-banner {
-    padding: 0.85rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.92rem;
+    padding: 0.95rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.93rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     border: 1px solid transparent;
 }
 
 .alert-error {
-    background-color: rgba(230, 57, 70, 0.18);
-    border-color: var(--status-danger);
-    color: #ffb3c1;
+    background-color: rgba(229, 107, 111, 0.14);
+    border-color: rgba(229, 107, 111, 0.35);
+    color: #f8b4b7;
 }
 
 .alert-success {
-    background-color: rgba(82, 183, 136, 0.18);
-    border-color: var(--accent-moss);
-    color: #b7e4c7;
+    background-color: rgba(118, 181, 150, 0.14);
+    border-color: rgba(118, 181, 150, 0.35);
+    color: #bde6d2;
 }
 
 .alert-warning {
-    background-color: rgba(244, 162, 97, 0.18);
-    border-color: var(--status-warning);
-    color: #ffd166;
+    background-color: rgba(234, 182, 106, 0.14);
+    border-color: rgba(234, 182, 106, 0.35);
+    color: #f9d89c;
 }
 
-/* Selector Táctil de Categorías en Campo */
+/* =========================================================================
+   SELECTOR TÁCTIL DE CATEGORÍAS (Botones grandes y redondeados)
+   ========================================================================= */
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 0.7rem;
 }
 
 .category-chip {
-    min-height: 52px;
-    padding: 0.65rem 0.85rem;
-    border-radius: var(--radius-md);
+    min-height: 54px;
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
     background-color: var(--bg-input);
-    border: 2px solid var(--border-color);
-    color: var(--text-primary);
-    font-weight: 700;
-    font-size: 0.92rem;
-    text-align: left;
+    border: 1.5px solid var(--border-strong);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.93rem;
+    text-align: center;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    transition: all 0.16s ease;
+}
+
+.category-chip:hover {
+    border-color: rgba(118, 181, 150, 0.4);
+    color: var(--text-primary);
 }
 
 .category-chip.active {
     border-color: var(--accent-moss);
-    background-color: rgba(82, 183, 136, 0.18);
-    color: #d8f3dc;
+    background-color: rgba(118, 181, 150, 0.16);
+    color: var(--text-primary);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(118, 181, 150, 0.12);
 }
 
 .category-chip.alert-chip.active {
     border-color: var(--status-danger);
-    background-color: rgba(230, 57, 70, 0.22);
-    color: #ffccd5;
+    background-color: rgba(229, 107, 111, 0.18);
+    color: #ffd6d8;
 }
 
-/* Telemetría GPS y Simulación */
-.telemetry-box {
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.9rem;
-    margin-bottom: 1rem;
-}
-
+/* =========================================================================
+   CAJAS DE TELEMETRÍA GPS REDONDEADAS
+   ========================================================================= */
 .telemetry-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-    gap: 0.75rem;
-    margin-top: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    gap: 0.65rem;
+    margin-top: 0.85rem;
 }
 
 .telemetry-item {
     background-color: var(--bg-secondary);
-    padding: 0.55rem 0.75rem;
-    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.9rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
 }
 
 .telemetry-label {
     font-size: 0.74rem;
     color: var(--text-secondary);
-    text-transform: uppercase;
+    margin-bottom: 0.15rem;
 }
 
 .telemetry-value {
     font-family: var(--font-mono);
-    font-size: 0.98rem;
+    font-size: 0.96rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
-/* Vista Previa de Fotografías */
+/* =========================================================================
+   TARJETAS DE FOTOGRAFÍAS Y MAPAS REDONDEADOS
+   ========================================================================= */
 .photo-preview-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 0.85rem;
-    margin-top: 0.85rem;
+    margin-top: 0.95rem;
 }
 
 .photo-preview-card {
-    background-color: var(--bg-input);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -374,83 +441,97 @@
 
 .photo-preview-img {
     width: 100%;
-    height: 130px;
+    height: 135px;
     object-fit: cover;
-    background-color: #0a100d;
+    background-color: #080b09;
 }
 
 .photo-preview-meta {
-    padding: 0.5rem;
-    font-size: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
     flex: 1;
 }
 
-/* Mapa Leaflet */
 .map-container-box {
     width: 100%;
     height: 460px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
+    border-radius: 22px;
+    border: 1px solid var(--border-strong);
     overflow: hidden;
-    background-color: #121f19;
+    background-color: #0d1310;
 }
 
 .map-container-small {
-    height: 260px;
+    height: 250px;
+    border-radius: 18px;
 }
 
-/* KPIs Dashboard Administrativo */
+/* =========================================================================
+   INDICADORES KPI (Dashboard limpio y amigable)
+   ========================================================================= */
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.9rem;
     margin-bottom: 1.25rem;
 }
 
 .kpi-card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.15rem;
+    border-radius: 22px;
+    padding: 1.2rem 1.35rem;
+    box-shadow: var(--shadow-soft);
 }
 
 .kpi-value {
-    font-size: 1.85rem;
+    font-size: 1.9rem;
     font-weight: 800;
     color: var(--accent-moss);
     font-family: var(--font-mono);
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
 }
 
 .kpi-label {
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
-/* Listas de Registros y Tablas */
+/* =========================================================================
+   LISTADO DE HALLAZGOS Y MODALES REDONDEADOS
+   ========================================================================= */
 .records-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.8rem;
 }
 
 .record-item {
     background-color: var(--bg-input);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.9rem 1rem;
+    border-radius: 20px;
+    padding: 1.05rem 1.2rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
+    transition: border-color 0.15s ease;
 }
 
-/* Modal de Auditoría de Metadatos */
+.record-item:hover {
+    border-color: var(--border-strong);
+}
+
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background-color: rgba(5, 10, 8, 0.82);
+    background-color: rgba(4, 6, 5, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -460,10 +541,10 @@
 
 .modal-content {
     background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-strong);
+    border-radius: 28px;
     width: 100%;
-    max-width: 540px;
-    padding: 1.5rem;
+    max-width: 520px;
+    padding: 1.75rem;
     box-shadow: var(--shadow-card);
 }
