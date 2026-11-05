@@ -1,0 +1,67 @@
+/**
+ * @file css/responsive.css
+ * @description Reglas de diseño adaptable (Mobile-First para Guardabosques en campo,
+ * Grid expandido para Administradores en escritorio).
+ */
+
+.field-workspace-grid,
+.admin-workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.filter-bar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+}
+
+.action-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+/* Tabletas y pantallas medianas */
+@media (min-width: 768px) {
+    .filter-bar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Escritorio y Estaciones SIG */
+@media (min-width: 1024px) {
+    .field-workspace-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: start;
+    }
+
+    .admin-workspace-grid {
+        grid-template-columns: 1.35fr 0.65fr;
+        align-items: start;
+    }
+
+    .filter-bar-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Optimización móvil para botones de campo */
+@media (max-width: 640px) {
+    .app-topbar {
+        padding: 0.65rem 0.9rem;
+    }
+
+    .app-main-container {
+        padding: 0.85rem;
+    }
+
+    .panel-card {
+        padding: 1rem;
+    }
+
+    .action-button-group .btn {
+        width: 100%;
+    }
+}

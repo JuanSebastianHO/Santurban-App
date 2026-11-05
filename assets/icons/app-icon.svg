@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+    <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0f1914" />
+            <stop offset="100%" stop-color="#1e3128" />
+        </linearGradient>
+        <linearGradient id="mountainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#40916c" />
+            <stop offset="100%" stop-color="#2d6a4f" />
+        </linearGradient>
+    </defs>
+
+    <!-- Fondo Escudo Páramo -->
+    <rect width="512" height="512" rx="112" fill="url(#bgGrad)" stroke="#52b788" stroke-width="12" />
+
+    <!-- Sol / Laguna de Alta Montaña -->
+    <circle cx="370" cy="145" r="42" fill="#d4a373" opacity="0.88" />
+
+    <!-- Cumbres del Páramo de Santurbán -->
+    <path d="M56 384 L188 188 L292 312 L364 224 L456 384 Z" fill="url(#mountainGrad)" />
+
+    <!-- Roseta de Frailejón (Espeletia) -->
+    <g transform="translate(256, 330)">
+        <rect x="-12" y="0" width="24" height="82" rx="8" fill="#d4a373" />
+        <path d="M0 10 C-65 -20 -95 -65 -55 -85 C-20 -65 -10 -20 0 10 Z" fill="#74c69d" />
+        <path d="M0 10 C65 -20 95 -65 55 -85 C20 -65 10 -20 0 10 Z" fill="#74c69d" />
+        <path d="M0 5 C-35 -45 -40 -105 0 -120 C40 -105 35 -45 0 5 Z" fill="#95d5b2" />
+    </g>
+
+    <!-- Espejo de Agua (Laguna) -->
+    <rect x="76" y="408" width="360" height="22" rx="11" fill="#52b788" opacity="0.75" />
+</svg>
