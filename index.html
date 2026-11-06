@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#080b09" />
-    <meta name="description" content="Sistema PWA Offline-First para el Monitoreo de Biodiversidad y Alertas Ambientales en el Páramo de Santurbán." />
+    <meta name="description" content="SanturBio — Sistema PWA Offline-First para el Monitoreo de Biodiversidad y Alertas Ambientales en el Páramo de Santurbán." />
 
-    <title>Monitoreo de Biodiversidad — Páramo de Santurbán</title>
+    <title>SanturBio — Monitoreo de Biodiversidad</title>
 
     <!-- Manifiesto PWA -->
     <link rel="manifest" href="./manifest.json" />
     <link rel="icon" type="image/svg+xml" href="./assets/icons/app-icon.svg" />
 
-    <!-- Leaflet CSS (Sin atributo integrity para permitir entrega fluida desde Service Worker Offline) -->
+    <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -28,9 +28,15 @@
     <!-- Barra Superior de Estado y Navegación -->
     <header class="app-topbar" role="banner">
         <div class="brand-block">
-            <div class="brand-icon" aria-hidden="true">PS</div>
+            <img
+                src="./assets/icons/app-icon.svg"
+                alt="Logo SanturBio"
+                class="brand-icon"
+                width="44"
+                height="44"
+            />
             <div>
-                <div class="brand-title">Páramo de Santurbán</div>
+                <div class="brand-title">SanturBio</div>
                 <div class="brand-subtitle">Monitoreo Científico de Biodiversidad</div>
             </div>
         </div>
