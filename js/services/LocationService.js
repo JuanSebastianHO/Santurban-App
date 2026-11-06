@@ -41,7 +41,8 @@ export class LocationService {
      * }>}
      */
     async getCurrentPosition(options = {}) {
-        if (typeof navigator === 'undefined' || !('geolocation' in navigator)) {
+        const isNativeApp = globalThis.Capacitor?.isNativePlatform?.() === true;
+        if (!isNativeApp && (typeof navigator === 'undefined' || !('geolocation' in navigator))) {
             throw new Error('La API de Geolocalización no está disponible en este navegador o dispositivo.');
         }
 
@@ -51,35 +52,45 @@ export class LocationService {
             maximumAge: options.maximumAge ?? 0
         };
 
+        const position = isNativeApp
+            ? await this._getNativePosition(geoOptions)
+            : await this._getBrowserPosition(geoOptions);
+        const coords = position.coords;
+
+        // No inventar altitud ni precisión si el sensor entrega null o NaN
+        const rawAltitude =
+            typeof coords.altitude === 'number' && Number.isFinite(coords.altitude)
+                ? Number(coords.altitude.toFixed(2))
+                : null;
+
+        const rawAccuracy =
+            typeof coords.accuracy === 'number' && Number.isFinite(coords.accuracy)
+                ? Number(coords.accuracy.toFixed(2))
+                : null;
+
+        const result = {
+            latitude: Number(coords.latitude.toFixed(6)),
+            longitude: Number(coords.longitude.toFixed(6)),
+            altitude: rawAltitude,
+            location_accuracy: rawAccuracy,
+            location_source: ENV.LOCATION_SOURCES.GPS,
+            captured_at: new Date(position.timestamp || Date.now()).toISOString(),
+            sectorName: null
+        };
+
+        this._lastPosition = result;
+        return Object.freeze({ ...result });
+    }
+
+    async _getNativePosition(options) {
+        const { Geolocation } = await import('@capacitor/geolocation');
+        return Geolocation.getCurrentPosition(options);
+    }
+
+    _getBrowserPosition(options) {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const coords = pos.coords;
-
-                    // No inventar altitud ni precisión si el sensor entrega null o NaN
-                    const rawAltitude =
-                        typeof coords.altitude === 'number' && Number.isFinite(coords.altitude)
-                            ? Number(coords.altitude.toFixed(2))
-                            : null;
-
-                    const rawAccuracy =
-                        typeof coords.accuracy === 'number' && Number.isFinite(coords.accuracy)
-                            ? Number(coords.accuracy.toFixed(2))
-                            : null;
-
-                    const result = {
-                        latitude: Number(coords.latitude.toFixed(6)),
-                        longitude: Number(coords.longitude.toFixed(6)),
-                        altitude: rawAltitude,
-                        location_accuracy: rawAccuracy,
-                        location_source: ENV.LOCATION_SOURCES.GPS,
-                        captured_at: new Date(pos.timestamp || Date.now()).toISOString(),
-                        sectorName: null
-                    };
-
-                    this._lastPosition = result;
-                    resolve(Object.freeze({ ...result }));
-                },
+                resolve,
                 (err) => {
                     let message = 'No fue posible obtener la ubicación GPS.';
                     if (err) {
@@ -102,7 +113,7 @@ export class LocationService {
                     }
                     reject(new Error(message));
                 },
-                geoOptions
+                options
             );
         });
     }

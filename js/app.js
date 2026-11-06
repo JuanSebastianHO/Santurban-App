@@ -29,6 +29,7 @@ class SanturbanApp {
         this._viewSwitchBtn = document.getElementById('view-switch-btn');
         this._logoutBtn = document.getElementById('logout-btn');
         this._pwaInstallBtn = document.getElementById('pwa-install-btn');
+        this._androidDownloadBtn = document.getElementById('android-download-btn');
 
         this._currentViewInstance = null;
         this._activeMode = null; // 'field' | 'admin'
@@ -39,6 +40,10 @@ class SanturbanApp {
      * Arranca todos los servicios e inicializa la sesión de usuario.
      */
     async start() {
+        if (globalThis.Capacitor?.isNativePlatform?.()) {
+            this._androidDownloadBtn?.classList.add('hidden');
+        }
+
         await indexedDBService.init();
 
         this._bindTopbarEvents();

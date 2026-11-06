@@ -14,14 +14,20 @@ export class NetworkMonitor {
     constructor(eventBus = appEventBus) {
         this._eventBus = eventBus;
         this._isOnline = typeof navigator !== 'undefined' ? Boolean(navigator.onLine) : true;
-        this._isChecking = false;
+        this._checkPromise = null;
 
         this._handleBrowserOnline = this._handleBrowserOnline.bind(this);
         this._handleBrowserOffline = this._handleBrowserOffline.bind(this);
+        this._handleForeground = this._handleForeground.bind(this);
 
         if (typeof window !== 'undefined') {
             window.addEventListener('online', this._handleBrowserOnline);
             window.addEventListener('offline', this._handleBrowserOffline);
+            window.addEventListener('focus', this._handleForeground);
+            window.addEventListener('pageshow', this._handleForeground);
+        }
+        if (typeof document !== 'undefined') {
+            document.addEventListener('visibilitychange', this._handleForeground);
         }
     }
 
@@ -46,28 +52,43 @@ export class NetworkMonitor {
      * Verifica activamente si hay salida real hacia Supabase.
      * @returns {Promise<boolean>}
      */
-    async checkConnectivity() {
+    checkConnectivity() {
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
             this._updateStatus(false);
-            return false;
+            return Promise.resolve(false);
         }
 
-        if (this._isChecking) return this._isOnline;
-        this._isChecking = true;
+        if (this._checkPromise) return this._checkPromise;
 
+        this._checkPromise = this._probeConnectivity();
+        return this._checkPromise;
+    }
+
+    async _probeConnectivity() {
         try {
             const reachable = await supabaseService.ping();
-            this._updateStatus(reachable);
-            return reachable;
+            const isOnline = reachable && (typeof navigator === 'undefined' || navigator.onLine);
+            this._updateStatus(isOnline);
+            return isOnline;
         } catch {
             this._updateStatus(false);
             return false;
         } finally {
-            this._isChecking = false;
+            this._checkPromise = null;
         }
     }
 
     async _handleBrowserOnline() {
+        for (let attempt = 0; attempt < 3; attempt++) {
+            if (await this.checkConnectivity()) return;
+            if (attempt < 2) {
+                await new Promise((resolve) => setTimeout(resolve, (attempt + 1) * 1000));
+            }
+        }
+    }
+
+    async _handleForeground() {
+        if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
         await this.checkConnectivity();
     }
 

@@ -9,10 +9,23 @@ Aplicación Web Progresiva (PWA) desarrollada en **HTML5, CSS3 y JavaScript Vani
 - Navegador web moderno con soporte para ES6 Modules, `IndexedDB`, `Service Workers`, `Geolocation API` y `HTML5 Canvas` (Chrome, Edge, Firefox, Safari iOS/macOS).
 - Servidor HTTP estático local para desarrollo (por ejemplo: extensión *Live Server* de VS Code, `python -m http.server 8080`, o `npx serve .`).
 - Proyecto activo en **Supabase** (PostgreSQL + Authentication + Storage privado).
+- Para compilar la aplicación Android: Node.js 20 o superior, JDK 21 y Android SDK Platform 35 con Android Build Tools.
 
 ---
 
-## 2. Estructura del Proyecto
+## 2. Aplicación Android (APK)
+
+La app puede empaquetarse como APK instalable en Android con Capacitor. El APK de depuración incluye los recursos web y los permisos nativos para solicitar ubicación GPS.
+
+1. Instala Node.js 20+, JDK 21 y Android SDK Platform 35 con Android Build Tools. Configura `ANDROID_HOME` o `ANDROID_SDK_ROOT` para que Gradle encuentre el SDK.
+2. Instala las dependencias con `npm install`.
+3. Genera el proyecto Android una sola vez: `npx cap add android`.
+4. Compila el APK instalable: `npm run android:apk`.
+5. El APK queda en `android/app/build/outputs/apk/debug/app-debug.apk` y también en `public/downloads/SanturBio.apk`; la pantalla principal incluye el botón **Descargar APK**. En el teléfono, abre el archivo descargado y autoriza la instalación desde esa fuente cuando Android lo solicite.
+
+Después de compilar el APK, ejecuta `npm run build` para preparar la versión web lista para publicar, incluido el enlace de descarga. El APK de depuración se puede instalar directamente, pero para publicar en Google Play o distribuir actualizaciones consistentes se debe generar un APK/AAB de lanzamiento firmado con una clave privada protegida. No compartas esa clave junto con el APK. Los usuarios necesitan conexión para iniciar sesión y sincronizar con Supabase; los registros capturados sin conexión quedan guardados en el dispositivo.
+
+## 3. Estructura del Proyecto
 
 ```text
 santurban-biodiversidad/

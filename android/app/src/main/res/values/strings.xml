@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SanturBio</string>
+    <string name="title_activity_main">SanturBio</string>
+    <string name="package_name">com.santurban.biodiversidad</string>
+    <string name="custom_url_scheme">com.santurban.biodiversidad</string>
+</resources>

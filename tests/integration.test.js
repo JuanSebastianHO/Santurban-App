@@ -6,7 +6,7 @@
  */
 
 import { ENV } from '../js/config/env.js';
-import { EventBus } from '../js/core/EventBus.js';
+import { EventBus, EVENTS } from '../js/core/EventBus.js';
 import { ReporteAmbientalFactory, SYNC_STATUS } from '../js/models/ReporteAmbiental.js';
 import { LocalReportRepository } from '../js/repositories/LocalReportRepository.js';
 import { IndexedDBService } from '../js/services/IndexedDBService.js';
@@ -102,7 +102,7 @@ export async function runIntegrationTests() {
                         return onlineState;
                     },
                     checkConnectivity: async () => onlineState,
-                    subscribe: (cb) => testBus.on('net:change', cb)
+                    subscribe: (cb) => testBus.on(EVENTS.NETWORK_STATUS_CHANGED, cb)
                 };
 
                 const syncEngine = new SyncService({
@@ -150,7 +150,11 @@ export async function runIntegrationTests() {
 
                 // 3. Recuperar conexión y ejecutar sincronización dos veces seguidas para probar Idempotencia
                 onlineState = true;
-                const firstSync = await syncEngine.syncPendingQueue();
+                const autoSyncCompleted = new Promise((resolve) => {
+                    testBus.on(EVENTS.SYNC_COMPLETED, resolve);
+                });
+                testBus.emit(EVENTS.NETWORK_STATUS_CHANGED, { isOnline: true });
+                const firstSync = await autoSyncCompleted;
                 const secondSync = await syncEngine.syncPendingQueue();
 
                 assert(firstSync.syncedCount >= 1, 'La primera sincronización debió subir el hallazgo.');

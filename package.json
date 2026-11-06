@@ -1,0 +1,21 @@
+{
+    "name": "santurban-app",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "Aplicación offline-first de monitoreo ambiental de Santurbán",
+    "scripts": {
+        "build": "vite build && node scripts/copy-static-assets.js",
+        "android:sync": "npm run build && node scripts/exclude-apk-from-native-assets.js && cap sync android",
+        "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug && cd .. && node scripts/publish-android-apk.js"
+    },
+    "dependencies": {
+        "@capacitor/android": "^7.4.3",
+        "@capacitor/core": "^7.4.3",
+        "@capacitor/geolocation": "^7.1.5"
+    },
+    "devDependencies": {
+        "@capacitor/cli": "^7.4.3",
+        "vite": "^6.3.5"
+    }
+}
