@@ -1,14 +1,14 @@
 {
-    "name": "Monitoreo de Biodiversidad — Páramo de Santurbán",
-    "short_name": "Santurbán Bio",
+    "name": "SanturBio — Monitoreo Páramo de Santurbán",
+    "short_name": "SanturBio",
     "description": "Aplicación PWA Offline-First para guardabosques, investigadores y administradores ambientales del Páramo de Santurbán.",
     "lang": "es-CO",
     "start_url": "./index.html",
     "scope": "./",
     "display": "standalone",
     "orientation": "any",
-    "background_color": "#0f1914",
-    "theme_color": "#0f1914",
+    "background_color": "#080b09",
+    "theme_color": "#080b09",
     "categories": ["science", "education", "utilities", "productivity"],
     "icons": [
         {
