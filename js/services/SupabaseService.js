@@ -150,15 +150,23 @@ export class SupabaseService {
     }
 
     /**
-     * Verifica conectividad real contra el endpoint REST de Supabase.
+     * Verifica conectividad real contra el endpoint REST de Supabase enviando la Publishable Key
+     * tanto en el query string como en el header para evitar respuestas 401 en la consola.
      * @returns {Promise<boolean>}
      */
     async ping() {
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+            return false;
+        }
+
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
 
         try {
-            const response = await fetch(`${ENV.SUPABASE_URL}/rest/v1/`, {
+            const pingUrl = `${ENV.SUPABASE_URL}/rest/v1/?apikey=${encodeURIComponent(
+                ENV.SUPABASE_PUBLISHABLE_KEY
+            )}`;
+            const response = await fetch(pingUrl, {
                 method: 'HEAD',
                 headers: {
                     apikey: ENV.SUPABASE_PUBLISHABLE_KEY
@@ -167,7 +175,7 @@ export class SupabaseService {
                 cache: 'no-store'
             });
             clearTimeout(timeoutId);
-            return response.ok || response.status === 401;
+            return response.ok;
         } catch {
             clearTimeout(timeoutId);
             return false;
