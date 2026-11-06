@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0f1914" />
+    <meta name="theme-color" content="#080b09" />
     <meta name="description" content="Sistema PWA Offline-First para el Monitoreo de Biodiversidad y Alertas Ambientales en el Páramo de Santurbán." />
 
     <title>Monitoreo de Biodiversidad — Páramo de Santurbán</title>
@@ -12,12 +12,11 @@
     <link rel="manifest" href="./manifest.json" />
     <link rel="icon" type="image/svg+xml" href="./assets/icons/app-icon.svg" />
 
-    <!-- Leaflet CSS -->
+    <!-- Leaflet CSS (Sin atributo integrity para permitir entrega fluida desde Service Worker Offline) -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""
+        crossorigin="anonymous"
     />
 
     <!-- Hojas de Estilo del Proyecto -->
@@ -48,7 +47,7 @@
                 0 pendientes
             </span>
 
-            <!-- Botón de Instalación PWA (se habilita cuando el navegador dispara beforeinstallprompt) -->
+            <!-- Botón de Instalación PWA -->
             <button id="pwa-install-btn" type="button" class="btn btn-secondary btn-sm hidden">
                 Instalar App
             </button>
@@ -80,10 +79,12 @@
     <!-- Bibliotecas Geográficas: Leaflet.js + Leaflet.heat -->
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
+        crossorigin="anonymous"
     ></script>
-    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script
+        src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"
+        crossorigin="anonymous"
+    ></script>
 
     <!-- Punto de Entrada Principal (ES6 Modules) -->
     <script type="module" src="./js/app.js"></script>
