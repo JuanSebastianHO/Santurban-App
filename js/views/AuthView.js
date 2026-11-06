@@ -1,6 +1,6 @@
 /**
  * @file js/views/AuthView.js
- * @description Vista de inicio de sesión y visualización de perfil de usuario.
+ * @description Vista de inicio de sesión de SanturBio con logo oficial.
  * Construida íntegramente con createElement y textContent para protección contra XSS.
  */
 
@@ -37,7 +37,7 @@ export class AuthView {
                 name: 'email',
                 required: 'required',
                 autocomplete: 'email',
-                placeholder: 'guardabosque@santurban.gov.co'
+                placeholder: 'guardabosque@santurbio.org'
             }
         });
 
@@ -55,7 +55,7 @@ export class AuthView {
 
         this._submitBtn = createElement('button', {
             className: 'btn btn-primary btn-block btn-large',
-            text: 'Iniciar Sesión en el Sistema',
+            text: 'Iniciar Sesión en SanturBio',
             attrs: { type: 'submit' }
         });
 
@@ -101,13 +101,26 @@ export class AuthView {
                 createElement('div', {
                     className: 'auth-header',
                     children: [
-                        createElement('span', {
-                            className: 'ecosystem-badge',
-                            text: 'ECOSISTEMA DE ALTA MONTAÑA • 2.800 - 4.290 m s.n.m.'
+                        createElement('img', {
+                            attrs: {
+                                src: './assets/icons/app-icon.svg',
+                                alt: 'Logo SanturBio',
+                                width: '78',
+                                height: '78',
+                                style: 'border-radius: 50%; margin-bottom: 0.75rem; box-shadow: 0 6px 18px rgba(0,0,0,0.35);'
+                            }
+                        }),
+                        createElement('div', {
+                            children: [
+                                createElement('span', {
+                                    className: 'ecosystem-badge',
+                                    text: 'PÁRAMO DE SANTURBÁN • 2.800 - 4.290 m s.n.m.'
+                                })
+                            ]
                         }),
                         createElement('h1', {
                             className: 'auth-title',
-                            text: 'Páramo de Santurbán'
+                            text: 'SanturBio'
                         }),
                         createElement('p', {
                             className: 'auth-subtitle',
@@ -149,7 +162,7 @@ export class AuthView {
                     : error.message || 'Error al iniciar sesión.'
             );
             this._submitBtn.disabled = false;
-            this._submitBtn.textContent = 'Iniciar Sesión en el Sistema';
+            this._submitBtn.textContent = 'Iniciar Sesión en SanturBio';
         }
     }
 
