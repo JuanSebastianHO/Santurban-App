@@ -150,8 +150,8 @@ export class SupabaseService {
     }
 
     /**
-     * Verifica conectividad real contra el endpoint REST de Supabase enviando la Publishable Key
-     * tanto en el query string como en el header para evitar respuestas 401 en la consola.
+     * Verifica conectividad real contra el servidor de Supabase.
+     * Si el servidor responde (cualquier status HTTP > 0), hay salida real a internet.
      * @returns {Promise<boolean>}
      */
     async ping() {
@@ -160,14 +160,11 @@ export class SupabaseService {
         }
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
 
         try {
-            const pingUrl = `${ENV.SUPABASE_URL}/rest/v1/?apikey=${encodeURIComponent(
-                ENV.SUPABASE_PUBLISHABLE_KEY
-            )}`;
-            const response = await fetch(pingUrl, {
-                method: 'HEAD',
+            const response = await fetch(`${ENV.SUPABASE_URL}/auth/v1/health`, {
+                method: 'GET',
                 headers: {
                     apikey: ENV.SUPABASE_PUBLISHABLE_KEY
                 },
@@ -175,7 +172,8 @@ export class SupabaseService {
                 cache: 'no-store'
             });
             clearTimeout(timeoutId);
-            return response.ok;
+            // Si el servidor de Supabase responde (200, 401, etc.), hay conexión real a internet
+            return response.status > 0;
         } catch {
             clearTimeout(timeoutId);
             return false;
