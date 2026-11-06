@@ -1,7 +1,7 @@
 /**
  * @file js/viewmodels/AuthViewModel.js
  * @description ViewModel para autenticación con Supabase Auth y resolución
- * del rol desde la tabla `profiles` con soporte de arranque en frío Offline.
+ * del rol desde la tabla `profiles` con soporte instantáneo de recarga (F5) en modo Offline.
  */
 
 import { ENV } from '../config/env.js';
@@ -52,28 +52,44 @@ export class AuthViewModel {
     }
 
     /**
-     * Inicializa el estado de sesión al abrir la aplicación.
-     * Soporta recuperación de perfil desde IndexedDB cuando se abre en modo Offline.
+     * Inicializa el estado de sesión al abrir o recargar (F5) la aplicación.
+     * Si el dispositivo está Offline, recupera inmediatamente el perfil desde IndexedDB
+     * sin bloquear el arranque esperando peticiones de red.
      * @returns {Promise<{ isAuthenticated: boolean, profile: Object|null }>}
      */
     async initializeSession() {
         await this._idb.init();
 
-        try {
-            const session = await this._supabase.getSession();
-            if (session?.user) {
-                this._user = session.user;
-                await this._loadUserProfile(session.user.id, session.user.email);
-                this._emitAuthChange();
-                return { isAuthenticated: true, profile: this.profile };
+        const isBrowserOnline =
+            typeof navigator !== 'undefined' ? Boolean(navigator.onLine) : true;
+
+        // 1. Si hay conexión activa, validamos sesión contra Supabase con un timeout de seguridad de 3.5s
+        if (isBrowserOnline && this._network.isOnline) {
+            try {
+                const session = await Promise.race([
+                    this._supabase.getSession(),
+                    new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout de sesión')), 3500)
+                    )
+                ]);
+
+                if (session?.user) {
+                    this._user = session.user;
+                    await this._loadUserProfile(session.user.id, session.user.email);
+                    this._emitAuthChange();
+                    return { isAuthenticated: true, profile: this.profile };
+                }
+            } catch (err) {
+                console.warn(
+                    '[AuthViewModel] Red lenta o sin conexión al verificar sesión, usando caché local:',
+                    err.message
+                );
             }
-        } catch (err) {
-            console.warn('[AuthViewModel] No fue posible validar sesión remota, verificando caché local:', err.message);
         }
 
-        // Fallback Offline: si hay un perfil cacheado de una sesión previa activa
+        // 2. Fallback instantáneo Offline: recuperar perfil cacheado en IndexedDB
         const cachedProfiles = await this._idb.getAll(ENV.IDB_STORES.SESSION_CACHE);
-        if (cachedProfiles.length > 0 && !this._network.isOnline) {
+        if (cachedProfiles.length > 0) {
             const cached = cachedProfiles[0];
             this._user = { id: cached.id, email: cached.email };
             this._profile = {
@@ -114,7 +130,6 @@ export class AuthViewModel {
 
     /**
      * Cierra la sesión actual tanto en Supabase como en la caché de perfil local.
-     * Nota: No borra hallazgos pendientes de sincronización en IndexedDB para evitar pérdida de datos.
      */
     async logout() {
         try {
@@ -145,14 +160,14 @@ export class AuthViewModel {
                 created_at: remoteProfile.created_at
             };
 
-            // Guardar perfil básico en IndexedDB para permitir apertura en frío sin conexión
+            // Guardar perfil básico en IndexedDB para permitir recarga F5 sin conexión
             await this._idb.clearStore(ENV.IDB_STORES.SESSION_CACHE);
             await this._idb.put(ENV.IDB_STORES.SESSION_CACHE, {
                 ...this._profile,
                 email: email || '',
                 cached_at: new Date().toISOString()
             });
-        } catch (error) {
+        } catch {
             const cached = await this._idb.getById(ENV.IDB_STORES.SESSION_CACHE, userId);
             if (cached) {
                 this._profile = {
@@ -163,7 +178,9 @@ export class AuthViewModel {
                 };
                 return;
             }
-            throw new Error('No se pudo obtener el perfil de usuario desde la tabla "profiles". Verifique su conexión.');
+            throw new Error(
+                'No se pudo obtener el perfil de usuario desde la tabla "profiles". Verifique su conexión.'
+            );
         }
     }
 
