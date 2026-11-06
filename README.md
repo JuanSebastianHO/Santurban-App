@@ -23,6 +23,8 @@ La app puede empaquetarse como APK instalable en Android con Capacitor. El APK d
 4. Compila el APK instalable: `npm run android:apk`.
 5. El APK queda en `android/app/build/outputs/apk/debug/app-debug.apk` y también en `public/downloads/SanturBio.apk`; la pantalla principal incluye el botón **Descargar APK**. En el teléfono, abre el archivo descargado y autoriza la instalación desde esa fuente cuando Android lo solicite.
 
+**Importante:** los cambios realizados en el sitio web no actualizan por sí solos el APK ni las instalaciones que los usuarios ya tengan en sus celulares. Para incluir cambios nuevos en Android, vuelve a ejecutar `npm run android:apk` y distribuye el APK actualizado. Para publicar el sitio web con el enlace al APK nuevo, ejecuta también `npm run build` y publica la versión web resultante.
+
 Después de compilar el APK, ejecuta `npm run build` para preparar la versión web lista para publicar, incluido el enlace de descarga. El APK de depuración se puede instalar directamente, pero para publicar en Google Play o distribuir actualizaciones consistentes se debe generar un APK/AAB de lanzamiento firmado con una clave privada protegida. No compartas esa clave junto con el APK. Los usuarios necesitan conexión para iniciar sesión y sincronizar con Supabase; los registros capturados sin conexión quedan guardados en el dispositivo.
 
 ## 3. Estructura del Proyecto
